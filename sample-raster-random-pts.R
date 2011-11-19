@@ -1,6 +1,11 @@
 # Esto me anda con R 2.12.1 (2010-12-16), con los paquetes "raster" y "rgdal"
 # instalados.
 
+# Fue probado con la capa raster "prec10_44.tif" obtenida de la base de datos
+# WORLDCLIM. No he probado con otros tipos de formatos. De todas formas teniendo
+# rgdal seguramente el protocolo funcione para la gran mayoría de formatos que
+# existen.
+
 # Si hace falta instalarlos:
 # install.packages('raster')
 # install.packages('rgdal')
