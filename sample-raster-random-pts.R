@@ -44,7 +44,7 @@ bad <- is.na(tmp)     # 5 - Cuáles son los "malos"
 xy  <- xy[!bad,]      # 6 - Elimina los "malos"
 nrow(xy) # Número de valores "buenos"
 
-# De repente acá conviene pobar varias veces hasta que la cantidad de valores
+# De repente acá conviene probar varias veces hasta que la cantidad de valores
 # "buenos" sea respetable... (para maxent, con 5 mil está sobrado creo). No
 # se puede determinar de antemano cuántos buenos se van a conseguir en cada
 # generación de coordenadas aleatorias, ya que depende de cuántos puntos
