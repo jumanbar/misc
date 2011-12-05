@@ -1,3 +1,5 @@
+# OBSOLETO: el paquete 'raster' tiene la función 'sampleRandom' que, persumiblemente, sirve para lo mismo...
+
 # Esto me anda con R 2.12.1 (2010-12-16), con los paquetes "raster" y "rgdal"
 # instalados.
 
