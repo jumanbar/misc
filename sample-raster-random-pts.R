@@ -1,17 +1,19 @@
-# OBSOLETO: el paquete 'raster' tiene la función 'sampleRandom' que, persumiblemente, sirve para lo mismo...
+# OBSOLETO: el paquete 'raster' tiene la función 'sampleRandom' que, persumiblemente, sirve
+# para lo mismo...
 
 # NOTA: eventualmente voy a cambiar el script para que haga lo siguiente:
-# 1. dada una carpeta con una colección de archivos (capas raster, como pueden ser capas WORLDCLIM), haga un muestreo
-#    de puntos aleatorios en todas las capas (los puntos serían los mismos para todas).
-# 2. tomar todos los datos muestreados de las capas y meterlos en una tabla (la cual se guarda como csv).
+# 1. dada una carpeta con una colección de archivos (capas raster, como pueden ser capas
+# WORLDCLIM), haga un muestreo de puntos aleatorios en todas las capas (los puntos serían
+# los mismos para todas).
+# 2. tomar todos los datos muestreados de las capas y meterlos en una tabla (la cual se
+# guarda como csv).
 
 # Esto me anda con R 2.12.1 (2010-12-16), con los paquetes "raster" y "rgdal"
 # instalados.
 
-# Fue probado con la capa raster "prec10_44.tif" obtenida de la base de datos
-# WORLDCLIM. No he probado con otros tipos de formatos. De todas formas teniendo
-# rgdal seguramente el protocolo funcione para la gran mayoría de formatos que
-# existen.
+# Fue probado con la capa raster "prec10_44.tif" obtenida de la base de datos WORLDCLIM. No
+# he probado con otros tipos de formatos. De todas formas teniendo rgdal seguramente el
+# protocolo funcione para la gran mayoría de formatos que existen.
 
 # Si hace falta instalarlos:
 # install.packages('raster')
