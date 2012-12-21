@@ -2,7 +2,7 @@
 
 El cardenal es un ave que habita en tierras uruguayas. Cardenal también es el nombre popular de una planta de origen tropical que se ve principalmente en el hemisferio norte. Su nombre científico es _Pedilanthus tithymaloides_.
 
-En un informe de impacto ambiental presentado por una empresa uruguaya ante la Dirección Nacional de Medio Ambiente (Dinama) para solicitar la aprobación y construcción de una industria figura la lista de fauna que habita en el lugar. La lista indica que en el sitio hay aves como "cardenales (_Pedilanthus tithymaloides_)".
+En un informe de impacto ambiental presentado por una empresa uruguaya ante la Dirección Nacional de Medio Ambiente (Dinama) para solicitar la aprobación y construcción de una industria figura la lista de fauna que habita en el lugar. La lista indica que en el sitio hay aves como `"`cardenales (_Pedilanthus tithymaloides_)`"`.
 
 ¿El problema? Que _Pedilanthus tithymaloides_ es una planta, no un ave. Según el documento, consta también que en el sitio habitan "zorros (_Vulpes vulpes_)", en referencia al red fox, el zorro rojo, que habita también en el hemisferio norte, no en Uruguay.
 
