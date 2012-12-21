@@ -1,4 +1,4 @@
-# Informes de impacto ambiental presentados a Dinama para inversiones tienen "inconsistencias y datos poco transparentes" sobre la fauna.
+## Informes de impacto ambiental presentados a Dinama para inversiones tienen "inconsistencias y datos poco transparentes" sobre la fauna.
 
 El cardenal es un ave que habita en tierras uruguayas. Cardenal también es el nombre popular de una planta de origen tropical que se ve principalmente en el hemisferio norte. Su nombre científico es pedilanthus tithymaloides.
 
