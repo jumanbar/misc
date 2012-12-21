@@ -1,14 +1,14 @@
 ## Informes de impacto ambiental presentados a Dinama para inversiones tienen "inconsistencias y datos poco transparentes" sobre la fauna.
 
-El cardenal es un ave que habita en tierras uruguayas. Cardenal también es el nombre popular de una planta de origen tropical que se ve principalmente en el hemisferio norte. Su nombre científico es pedilanthus tithymaloides.
+El cardenal es un ave que habita en tierras uruguayas. Cardenal también es el nombre popular de una planta de origen tropical que se ve principalmente en el hemisferio norte. Su nombre científico es *Pedilanthus tithymaloides*.
 
-En un informe de impacto ambiental presentado por una empresa uruguaya ante la Dirección Nacional de Medio Ambiente (Dinama) para solicitar la aprobación y construcción de una industria figura la lista de fauna que habita en el lugar. La lista indica que en el sitio hay aves como "cardenales (pedilanthus tithymaloides)".
+En un informe de impacto ambiental presentado por una empresa uruguaya ante la Dirección Nacional de Medio Ambiente (Dinama) para solicitar la aprobación y construcción de una industria figura la lista de fauna que habita en el lugar. La lista indica que en el sitio hay aves como "cardenales (*Pedilanthus tithymaloides*)".
 
-¿El problema? Que Pedilanthus tithymaloides es una planta, no un ave. Según el documento, consta también que en el sitio habitan "zorros (vulpes vulpes)", en referencia al red fox, el zorro rojo, que habita también en el hemisferio norte, no en Uruguay.
+¿El problema? Que *Pedilanthus tithymaloides* es una planta, no un ave. Según el documento, consta también que en el sitio habitan "zorros (*Vulpes vulpes*)", en referencia al red fox, el zorro rojo, que habita también en el hemisferio norte, no en Uruguay.
 
 Este análisis de impacto ambiental pertenece a un proyecto que hoy se concretó. La industria está en funcionamiento, según informaron especialistas de la Facultad de Ciencias encargados de realizar un minucioso análisis sobre la calidad de los trabajos que las empresas presentan a la Dinama a la espera de aprobación.
 
-El informe en cuestión, que cita más de diez especies, tenía "los nombres mal puestos". Este, junto con otro caso que clasificaba a una perdiz como "perdix perdix" —que solo habita en el hemisferio norte y no existe en Uruguay— fueron "disparadores" para que un grupo de científicos decidieran ir a fondo y relevar los errores sobre fauna en estos documentos que se le presentan a la Dinama, dijo a Búsqueda Mauro Berazategui, licenciado y máster en Ciencias Biológicas y docente del Centro Universitario de la Región Este (CURE) de la Universidad de la República (Udelar). 
+El informe en cuestión, que cita más de diez especies, tenía "los nombres mal puestos". Este, junto con otro caso que clasificaba a una perdiz como "*Perdix perdix*" —que solo habita en el hemisferio norte y no existe en Uruguay— fueron "disparadores" para que un grupo de científicos decidieran ir a fondo y relevar los errores sobre fauna en estos documentos que se le presentan a la Dinama, dijo a Búsqueda Mauro Berazategui, licenciado y máster en Ciencias Biológicas y docente del Centro Universitario de la Región Este (CURE) de la Universidad de la República (Udelar). 
 
 
 ### Informe ambiental.
