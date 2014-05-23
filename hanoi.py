@@ -18,7 +18,8 @@ class TowerSet:
         self.t2 = self.torres['t2']
         self.t3 = self.torres['t3']
     def show(self):
-        print 'Movs.: ' + str(self.n_mov)
+        #print '#Piezas: ' + str(self.n)
+        print 'Movimientos: ' + str(self.n_mov)
         print 't1: ' + '-'.join([str(n) for n in self.t1])
         print 't2: ' + '-'.join([str(n) for n in self.t2])
         print 't3: ' + '-'.join([str(n) for n in self.t3])
@@ -38,17 +39,17 @@ class TowerSet:
         self.torres[fin].append(fini)
         self.update_ts()
         self.n_mov = self.n_mov + 1
-        print 'Movimiento #' + str(self.n_mov)
         self.show()
         print ''
         
-def solve(t, n=-1, ini='t1', fin='t3'):
-    if n == -1:
+def solve(t, n=-2, ini='t1', fin='t3'):
+    if n == -2:
         n = t.n
     if t.n_mov == 0 and n == t.n:
-      print 'Torres de Hanoi con ' + str(n) + ' piezas:'
-      t.show()
-      print ' ==== Inicio ===='
+        print 'Torres de Hanoi con ' + str(n) + ' piezas,'
+        print 'debe resolverse en ' + str(2 ** n - 1) + ' movimientos:'
+        t.show()
+        print ' ==== Inicio ===='
     alt = [k for k in t.torres.keys() if k != ini and k != fin][0]
     if n == 2:
         t.move(ini, alt)
@@ -58,13 +59,18 @@ def solve(t, n=-1, ini='t1', fin='t3'):
         solve(t, n - 1, ini, alt)
         t.move(ini, fin)
         solve(t, n - 1, alt, fin)
+    if t.n_mov == ((2 ** t.n) - 1) and n == t.n:
+        print 'Ya se han hecho 2^' + str(t.n) + ' - 1 = ' + str(t.n_mov) + ' movimientos.'
+
+def hanoi(n):
+    T = TowerSet(n)
+    solve(T)
 
 if __name__ == '__main__':
-    print 'Torres de Hanoi: importado'
+    print '[modulo hanoi importado]'
     if len(sys.argv) > 1:
         npiezas = int(sys.argv[1])
     else:
         npiezas = 3
-    T = TowerSet(npiezas)
-    solve(T)
+    hanoi(npiezas)
 
