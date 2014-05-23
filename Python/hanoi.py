@@ -5,40 +5,69 @@ Created on Thu May 22 14:44:31 2014
 @author: Juan Manuel Barreneche
 
 Proyecto: torres de Hanoi.
+
+TowerSet:
+    La clase TowerSet es una representación de las torres de Hanoi.
+    Un TowerSet T es un set de 3 torres de Hanoi de n piezas.
+    - Una instancia nueva tiene todas las piezas en la primer torre,
+      ordenadas de mayor (abajo) a menor (arriba). Cada 'pieza' es un número.
+    - El método move sirve para mover la pieza de más arriba de una torre a otra.
+      Se puede usar de varias formas. Ejemplos (mover pieza de torre 1 a torre 2):
+      >> T.move(12)
+      >> T.move(1,2)
+      >> T.move('12')
+      >> T.move('1','2')
+
+solve:
+    La función solve mueve las piezas siguiendo la solución más eficiente (2^n - 1).
+    En cada paso mueve una pieza dentro del TowerSet t.
+    Es un problema recursivo, por lo que la función también lo es. Aplica la solución básica
+    del problema con 2 piezas y la repite para torres de n piezas.
+    Con 2 piezas la secuencia es:
+      1) pieza 1: t.inicial     ---> t.alternativa
+      1) pieza 2: t.inicial     ---> t.final
+      1) pieza 1: t.alternativa ---> t.final
+    Esta secuencia se repite siempre, cambiando "pieza 1" por todas las piezas menos la del fondo y
+    "pieza 2" por la pieza mayor. La diferencia surge de que cada vez que se mueve la "pieza 1"
+    de una torre a otra, ya no es un solo paso, si no la cantidad correspondiente a una torre de n - 1
+    piezas (2^(n - 1) - 1).
+    Se puede ver que el problema se deconstruye en un problema de n - 1 piezas, que a su vez contiene 
+    un problema de n - 2 piezas, y así, hasta llegar a 2 piezas.
+
+hanoi:
+    La función hanoi simplemente muestra un ejemplo con n piezas.
 """
 
 import sys
 
 class TowerSet:
-    """
-    TowerSet(n)
-    Un TowerSet es un set de 3 torres de Hanoi de n piezas.
+    """ ej:
+    T = TowerSet(n)
     """
     n_mov = 0
     def __init__(self, n):
         self.torres = {'t1': range(n, 0, -1), 't2': [], 't3': []}
-        self.update_ts()
         self.n = n
     def __repr__(self):
         out = 'Movimientos: ' + str(self.n_mov) + \
-          '\nt1: ' + '-'.join([str(n) for n in self.t1]) + \
-          '\nt2: ' + '-'.join([str(n) for n in self.t2]) + \
-          '\nt3: ' + '-'.join([str(n) for n in self.t3])
+          '\nt1: ' + '-'.join([str(n) for n in self.torres['t1']]) + \
+          '\nt2: ' + '-'.join([str(n) for n in self.torres['t2']]) + \
+          '\nt3: ' + '-'.join([str(n) for n in self.torres['t3']])
         return out
     def __str__(self):
         return self.__repr__()
-    def update_ts(self):
-        self.t1 = self.torres['t1']
-        self.t2 = self.torres['t2']
-        self.t3 = self.torres['t3']
     def move(self, *args):
         if len(args) == 1:
-            args = str(args)
-            if len(args
+            args = str(args[0])
+            if len(args) < 2:
+                print 'Error:'
+                print 'El movimiento necesita 2 valores: origen y destino.'
+                return 0
             ini = 't' + args[0]
             fin = 't' + args[1]
-
-
+        if len (args) == 2:
+            ini = 't' + str(args[0])
+            fin = 't' + str(args[1])
         fini = self.torres[ini][-1]
         print str(fini) + ': ' + ini + ' ---> ' + fin
         if len(self.torres[fin]) > 0:
@@ -52,37 +81,22 @@ class TowerSet:
             return 0
         self.torres[ini].remove(fini)
         self.torres[fin].append(fini)
-        self.update_ts()
-        self.n_mov = self.n_mov + 1
-        self.show()
-        print ''
-    def mover(self, dirx):
-        fini = self.torres[ini][-1]
-        print str(fini) + ': ' + ini + ' ---> ' + fin
-        if len(self.torres[fin]) > 0:
-            ffin = self.torres[fin][-1]
-        else:
-            ffin = fini + 1
-        if fini > ffin:
-            print 'Error:'
-            print 'La ficha ' + str(fini) + ' no se puede colocar encima de la ficha ' + str(ffin) + '.'
-            print 'No se puede realizar el movimiento.'
-            return 0
-        self.torres[ini].remove(fini)
-        self.torres[fin].append(fini)
-        self.update_ts()
         self.n_mov = self.n_mov + 1
         print self
         
-def solve(t, n=-2, ini='t1', fin='t3'):
+def solve(t, n=-2, ini=1, fin=3):
+    """ ej:
+    T = TowerSet(3)
+    solve(T)
+    """
     if n == -2:
         n = t.n
     if t.n_mov == 0 and n == t.n:
         print 'Torres de Hanoi con ' + str(n) + ' piezas,'
         print 'debe resolverse en ' + str(2 ** n - 1) + ' movimientos:'
-        t.show()
+        print t
         print ' ==== Inicio ===='
-    alt = [k for k in t.torres.keys() if k != ini and k != fin][0]
+    alt = [k for k in range(1,4) if k != ini and k != fin][0] # alt es el número de la tercera torre
     if n == 2:
         t.move(ini, alt)
         t.move(ini, fin)
@@ -95,12 +109,15 @@ def solve(t, n=-2, ini='t1', fin='t3'):
         print 'Ya se han hecho 2^' + str(t.n) + ' - 1 = ' + str(t.n_mov) + ' movimientos.'
 
 def hanoi(n):
+    """ ej:
+    hanoi(3) 
+    """
     T = TowerSet(n)
     solve(T)
 
 if __name__ == '__main__':
     print '[modulo hanoi importado]'
-    # if len(sys.argv) > 1:
-        # npiezas = int(sys.argv[1])
-        # hanoi(npiezas)
+    if len(sys.argv) > 1:
+        npiezas = int(sys.argv[1])
+        hanoi(npiezas)
 
