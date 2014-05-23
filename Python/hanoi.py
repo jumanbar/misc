@@ -57,15 +57,19 @@ class TowerSet:
     def __str__(self):
         return self.__repr__()
     def move(self, *args):
-        if len(args) == 1:
+        if type(args[0]) == list:
+            ini = 't' + str(args[0][0])
+            fin = 't' + str(args[0][1])
+        elif len(args) == 1:
             args = str(args[0])
             if len(args) < 2:
                 print 'Error:'
                 print 'El movimiento necesita 2 valores: origen y destino.'
-                return 0
+                return 0 
+            print 'aca', args
             ini = 't' + args[0]
             fin = 't' + args[1]
-        if len (args) == 2:
+        elif len(args) >= 2:
             ini = 't' + str(args[0])
             fin = 't' + str(args[1])
         fini = self.torres[ini][-1]
@@ -107,6 +111,38 @@ def solve(t, n=-2, ini=1, fin=3):
         solve(t, n - 1, alt, fin)
     if t.n_mov == ((2 ** t.n) - 1) and n == t.n:
         print 'Ya se han hecho 2^' + str(t.n) + ' - 1 = ' + str(t.n_mov) + ' movimientos.'
+
+class Steps:
+    def __init__(self, n):
+        self.step_list = [[0,0]] * (2 ** n - 1)
+        self.i = 0
+    def __repr__(self):
+        return str(self.step_list)
+    def __str__(self):
+        return self.__repr__()
+    def add(self, lst):
+        self.step_list[self.i] = lst
+        self.i = self.i + 1
+    def __len__(self):
+        return len(self.step_list)
+    def __getitem__(self, i):
+        return self.step_list[i]
+
+
+def solve_steps(n, out = [], ini=1, fin=3, start=True):
+    if start:
+        out = Steps(n)
+    alt = [k for k in range(1,4) if k != ini and k != fin][0] # alt es el número de la tercera torre
+    if n == 2:
+        out.add([ini, alt])
+        out.add([ini, fin])
+        out.add([alt, fin])
+    else:
+        solve_steps(n - 1, out, ini, alt, False)
+        out.add([ini, fin])
+        solve_steps(n - 1, out, alt, fin, False)
+    return out
+
 
 def hanoi(n):
     """ ej:
