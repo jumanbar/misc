@@ -23,6 +23,7 @@
 #'
 #' @seealso \code{\link{write.arff}}
 read.arff <- function (file, nrows = -1, skip = 0) {
+    # Authors: R Core Team and Juan M. Barreneche
     if (is.character(file)) {
         file <- file(file, "r")
         on.exit(close(file))
@@ -42,8 +43,10 @@ read.arff <- function (file, nrows = -1, skip = 0) {
     nom_attribs <- NULL ## Vector to store nominal attribute indexes
     while (length(line) && regexpr("^[[:space:]]*@(?i)data", 
         line, perl = TRUE) == -1L) {
-        if (regexpr("^[[:space:]]*@(?i)attribute", line, perl = TRUE) > 
-            0L) {
+        if (regexpr("^[[:space:]]*@(?i)relation", line, perl = TRUE) > 0L) {
+            relation <- gsub("^[[:space:]]*@(?i)relation[[:space:]]+", "", line)
+        }
+        if (regexpr("^[[:space:]]*@(?i)attribute", line, perl = TRUE) > 0L) {
             a <- a + 1L
             con <- textConnection(line)
             line <- scan(con, character(), quiet = TRUE)
@@ -62,7 +65,7 @@ read.arff <- function (file, nrows = -1, skip = 0) {
                 ## Here i deal with the levels of nominal attributes:
                 if (grepl("^\\{.*\\}$", type)) {
                     nom_attribs <- c(nom_attribs, a)
-                    lev <- strsplit(gsub("\\{|\\}\\'", "", line[3L]), ",")[[1]]
+                    lev <- strsplit(gsub("\\{|\\}|\\'", "", line[3L]), ",")[[1]]
                     nom_levels[[a]] <- lev
                 }
                 type <- sub("\\{.*", "factor", type)
@@ -84,17 +87,17 @@ read.arff <- function (file, nrows = -1, skip = 0) {
     data <- read.table(file, sep = ",", na.strings = "?", colClasses = col_types, 
         comment.char = "%", nrows = nrows, skip = skip)
     if (any(ind <- which(!is.na(col_dfmts))))
-        for (i in ind) data[i] <- as.data.frame(strptime(data[[i]], 
-            col_dfmts[i]))
+        for (i in ind) data[i] <- as.data.frame(strptime(data[[i]], col_dfmts[i]))
     for (i in nom_attribs) {
         levels(data[[i]]) <- nom_levels[[i]]
     }
+        
     for (i in seq_len(length(data))) {
         if (is.factor(data[[i]])) {
             levels(data[[i]]) <- gsub("\\\\", "", levels(data[[i]]))
         }
     }
     names(data) <- col_names
+    attr(data, "relation") <- relation
     data
 }
-
