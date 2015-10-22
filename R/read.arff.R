@@ -14,7 +14,7 @@
 #' @param skip integer: the number of rows of data to skip before beginning 
 #'        to read data.
 #'
-#' @value 
+#' @return
 #'  A data frame containing the data from the ARFF file.
 #'  
 #' @references
