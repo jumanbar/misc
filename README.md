@@ -4,7 +4,7 @@
 
 ### read.arff
 
-This function is a modified version of the one found in the (foreign)[https://cran.r-project.org/web/packages/foreign/index.html] package. 
+This function is a modified version of the one found in the [foreign](https://cran.r-project.org/web/packages/foreign/index.html) package. 
 This changes aim to correct a problem I found with the standard `read.arff`: levels in factors do not match what's explicitly written in the original arff file.
 
 For example, if a nominal attribute in some arff datafile has this line in the header:
