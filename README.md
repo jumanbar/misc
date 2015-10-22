@@ -26,3 +26,6 @@ With this version of `read.arff`, when dealing with the aforementioned case, I g
 
 And also I can set a couple of parameters which can help me tune up my work flow to better fit my needs (for example, reading only a limited number of lines, since I just want to make a couple of fast tests and therefore, I don't need the whole dataset).
  
+### write.arff
+
+It's the same on found in the [foreign](https://cran.r-project.org/web/packages/foreign/index.html) package, only with a slightly different handling of the "relation" argument. It assumes that the data.frame x has a "relation" attribute and uses it accordingly (pastes the R object name with the relation attribute).
