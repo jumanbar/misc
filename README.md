@@ -11,7 +11,8 @@ For example, if a nominal attribute in some arff datafile has this line in the h
 
     @attribute X {'A', 'B', 'C'}
 
-But the data only have instances of 'A' and 'B', but not 'C', then what R imports is:
+But the data only have instances of '`A`' and '`B`', but not '`C`', then what R imports is:
+
     dat <- read.arff("data.arff")
     levels(dat$X)
     [1] "a"  "b"
