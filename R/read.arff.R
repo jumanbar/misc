@@ -88,7 +88,7 @@ read.arff <- function (file, nrows = -1, skip = 0) {
             col_dfmts[i]))
     for (i in nom_attribs) {
         levels(data[[i]]) <- nom_levels[[i]]
-        
+    }
     for (i in seq_len(length(data))) {
         if (is.factor(data[[i]])) {
             levels(data[[i]]) <- gsub("\\\\", "", levels(data[[i]]))
