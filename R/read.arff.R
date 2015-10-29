@@ -1,3 +1,5 @@
+cat("Atencion: se cargan las funciones read.arff y write.arff modificadas, basadas en el paquete foreign\n")
+
 #' @title
 #'  Read Data from ARFF Files
 #'
@@ -14,7 +16,7 @@
 #' @param skip integer: the number of rows of data to skip before beginning 
 #'        to read data.
 #'
-#' @return
+#' @value 
 #'  A data frame containing the data from the ARFF file.
 #'  
 #' @references
@@ -89,7 +91,7 @@ read.arff <- function (file, nrows = -1, skip = 0) {
     if (any(ind <- which(!is.na(col_dfmts))))
         for (i in ind) data[i] <- as.data.frame(strptime(data[[i]], col_dfmts[i]))
     for (i in nom_attribs) {
-        levels(data[[i]]) <- nom_levels[[i]]
+        data[[i]] <- factor(data[[i]], levels = nom_levels[[i]])
     }
         
     for (i in seq_len(length(data))) {
@@ -99,5 +101,6 @@ read.arff <- function (file, nrows = -1, skip = 0) {
     }
     names(data) <- col_names
     attr(data, "relation") <- relation
+    class(data) <- c(class(data), "arff.data.frame")
     data
 }
