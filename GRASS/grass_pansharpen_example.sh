@@ -11,7 +11,7 @@ i.landsat.toar \
   metfile=/home/jmb/Ramsar_2016/SIG/Landsat/83_2015_11_15/83_2015_11_15_UTM22S_MTL.txt
 
 ###### Recode rasters created by i.landsat.toar
-for i in {1..11}
+for i in 2 3 4 8
 do 
   basemap="83_toar_$i"
 
