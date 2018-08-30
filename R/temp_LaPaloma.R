@@ -1,6 +1,6 @@
 library(readr)
 library(tidyverse)
-temp <- read_delim("../Downloads/57285.txt", "\t", 
+temp <- read_delim("57285.txt", "\t", # Editar la ruta. Con la URL no me funcionó (http://www.seanoe.org/data/00445/55639/data/57285.txt)
                    escape_double = FALSE, trim_ws = TRUE)
 
 names(temp)[c(4, 5)] <- c("hour", "Temp")
