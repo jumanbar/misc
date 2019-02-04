@@ -34,6 +34,7 @@ cut_mids <- function(x, breaks, labels) {
 
 recambio <- function(f, labels) {
   # Usada por cut3
+  # Se puede sustituir por recode_factor seguramente
   require(magrittr)
   levels(f) <- labels
   f %>% 
@@ -59,7 +60,8 @@ cut3 <- function(data, v, breaks = 30, log = FALSE) {
   x %>%
     mutate(
       rango = cut(x, h$breaks),
-      mids  = recambio(rango, h$mids)) %>% 
+      mids  = recambio(rango, h$mids)) %>%
+      # mids = recode_factor(rango)
     select(-x)
 }
 
@@ -67,25 +69,30 @@ cut3 <- function(data, v, breaks = 30, log = FALSE) {
 
 #' Marcas para ejes en escala Log
 #'
-#'`ticksLog` toma un vector numérico y devuelve un
+#' (Posiblemente obsoleta) `ticksLog` toma un vector numerico y devuelve una
+#' tabla con Valores, un vector de las potencias de 10 en donde van las marcas
+#' y el texto a imprimir en dichas marcas (los numeros en escala lineal).
+#' 
 #' @param x `numeric` atomic vector
 #'
-#' @return Devuelve una lista con dos elementos: Valores y Texto.
+#' @return Devuelve una tabla con dos elementos: Valores y Texto.
 #' \describe{
-#'   \item{Valores}{Vector numérico con los valores en que deben insertarse
+#'   \item{Valores}{Vector numerico con los valores en que deben insertarse
 #'   "ticks" dentro del eje.}
-#'   \item{Texto}
+#'   \item{Texto}{Vector de texto con las cadenas a imprimir en las marcas
+#'   del grafico}
 #' }
 #' @export
 #'
 #' @examples
+#' y <-  rlnorm(200, 2, 3)
+#' ti <- ticksLog(y)
+#' plot_ly(data.frame(x = y), x = ~ log10(x), type = "histogram") %>%
+#'   layout(xaxis = list(tickvals = ti$Valores, ticktext = ti$Texto))
 ticksLog <- function(x) {
   require(magrittr)
-  l1 <- length(x)
-  x <- x[x > 0]
-  l2 <- length(x)
-  if (l1 != l2) {
-    d <- l1 - l2
+  if (any(x <= 0)) {
+    d <- length(x) - length(x <- x[x > 0])
     txt <- ifelse(d > 1, 
            paste0("eliminaron ", d, " valores"),
            paste0("eliminó ", d, " valor"))
@@ -93,15 +100,14 @@ ticksLog <- function(x) {
   }
   x <- log10(x)
   rango <- range(x, na.rm = TRUE)
-  tvals <- ceiling(rango[1]):floor(rango[2])
-  ttext <- 
-    lindo_num(10 ** (tvals))
-  return(list(Valores = tvals, Texto = ttext))
+  tvals <- floor(rango[1]):ceiling(rango[2])
+  ttext <- number(z <- 10 ** (tvals), accuracy = min(z))
+  return(tibble(Valores = tvals, Texto = ttext))
 }
 
 rango2lineal <- function(x, log = FALSE) {
   # Para rangos/intervalos que estaban en 
-  # log10: convierte los números a escala
+  # log10: convierte los numeros a escala
   # lineal, usando 10 ** x
   require(magrittr)
   require(stringi)
@@ -112,13 +118,15 @@ rango2lineal <- function(x, log = FALSE) {
     nchar
   ini <- substr(x,  1,  1)
   fin <- substr(x, nc, nc)
-  x %>%
-    as.character %>%
+  xlvl <- x %>%
+    levels %>%
     gsub("\\(|\\)|\\[|\\]", "", .) %>% 
     stri_split_fixed(",") %>% 
     lapply(function(x) round(10 ** as.numeric(x), 1)) %>% 
     stri_join_list(", ") %>% 
     paste0(ini, ., fin)
+  levels(x) <- xlvl
+  return(x)
 }
 
 
@@ -126,7 +134,7 @@ extRango <- function(x, min = TRUE) {
   require(magrittr)
   require(stringi)
   # Para rangos/intervalos que estaban en 
-  # log10: convierte los números a escala
+  # log10: convierte los numeros a escala
   # lineal, usando 10 ** x
   x %>%
     as.character %>%
@@ -144,54 +152,58 @@ extRango <- function(x, min = TRUE) {
 #' @param log 
 #' @param breaks 
 #'
-#' @return
+#' @return Un data.frame con las siguientes columnas:
+#' \describe{
+#'   \item{Columna 1, opcional}{`character` Se trata de los valores de `fill_var`.}
+#'   \item{mids}{`double` Puntos medios los intervalos a ser utilizados para hacer
+#'   histogramas.}
+#'   \item{rangos}{`factor` Intervalos para realizar histograma. `mids` contiene los
+#'   puntos medios de estos intervalos.}
+#'   \item{n}{`integer` Conteos de la cantidad de entradas en `.data` que caen en
+#'   cada uno de los intervalos.}
+#' }
 #' @export
 #'
 #' @examples
-#' require(magrittr)
-#' require(rlang)
-#' require(dplyr)
-#' iris2 <- iris %>% 
-#' mutate(Prueba = sample(LETTERS[1:2], replace = TRUE, size = 150)) %>% 
-#'   as.tibble 
-#' prepa(iris2, var = Sepal.Length)
-#' prepa(iris2, var = Sepal.Length, log = TRUE)
-#' prepa(iris2, var = Sepal.Length, breaks = 10)
-#' prepa(iris2, var = Sepal.Length, breaks = "FD")
-#' prepa(iris2, var = Sepal.Length, fill_var = Prueba)
+#' prepData(diamonds, price)
+#' prepData(diamonds, price, log = TRUE)
+#' prepData(diamonds, price, breaks = 10)
+#' prepData(diamonds, price, breaks = "FD)
+#' prepData(diamonds, price, cut, color, log=TRUE)
 prepData <- function(.data,
                      var,
-                     fill_var = NULL,
+                     ...,
                      log = FALSE,
                      breaks = 30) {
   require(magrittr)
   require(rlang)
   require(dplyr)
   
-  var <- enquo(var)
-  fill_var <- enquo(fill_var)
+  var   <- enquo(var)
+  gvars <- enquos(...)
   
-  da <- .data %>%
-    cut3(!!var, breaks = breaks, log = log)
+  out <- .data %>%
+    cut3(!!var, breaks = breaks, log = log) %>% 
+    count(!!!gvars, mids, rango) %>% 
+    mutate(rango = rango2lineal(rango, log))
   
-  if (quo_name(fill_var) != "NULL") {
-    da <- count(da, !!fill_var, mids, rango)
-  } else {
-    da <- count(da, mids, rango)
-  }
-  da %>%
-    mutate(rango = rango2lineal(rango, FALSE))
+  vnames <- gvars %>% sapply(quo_name)
+  names(out)[1:(length(out) - 3)] <- vnames
+  return(out)
 }
 
-#' Histograma plotly stacked
+
+
+#' Histograma plotly apilado
 #'
-#' @param .data 
-#' @param var 
-#' @param fill_var 
-#' @param log 
-#' @param yrange 
-#' @param slider 
-#' @param ... 
+#' @param .data `data.frame` con el formato generado por la función prepData
+#' @param var Nombre de la variable a graficar.
+#' @param fill_var Nombre de variable a usar para rellenar con diferentes colores las barras del histograma
+#' @param log `logical`. Eje x en escala logaritmica, si es TRUE.
+#' @param ylab `character`. Etiqueta para el eje y.
+#' @param yrange `numeric`. Vector de longitud 2, que fija el rango de valores a abarcar en el eje y. 
+#' @param slider `logical`. Si es TRUE, se agrega un `rangeslider` debajo del histograma.
+#' @param ... Argumentos extra para pasar a la función `plot_ly`.
 #'
 #' @return
 #' @export
@@ -208,6 +220,7 @@ singleStackedHist <- function(.data,
                               var,
                               fill_var = NULL,
                               log = FALSE,
+                              ylab = "Conteo",
                               yrange = NULL,
                               slider = TRUE,
                               ...) {
@@ -232,33 +245,26 @@ singleStackedHist <- function(.data,
       stri_split_fixed(",") %>%
       sapply(as.numeric) %>% 
       structure(dim = NULL) %>% 
-      unique
+      distinct
     
-    # x <- select(.data,!!var)[[1]]
     cortes <- b$breaks(x[x > 0])
     cortesTexto <- number(cortes, accuracy = min(cortes))
     
-    # ti <- ticksLog(x)
-    
     ejex$tickvals <- cortes %>% log10
     ejex$ticktext <- cortesTexto
-    
-    ejex$tickvals <- ti$Valores
-    ejex$ticktext <- ti$Texto
-    # lindo_num(10 ** (ejex$tickvals))
-  }
-  
-  ejey <- list(title = "Conteo",
+    # ejex$range    <- range(x %>% log10)
+  }  
+  ejey <- list(title = ylab,
                fixedrange = FALSE)
   if (!is.null(yrange))
     ejey$range <- yrange
   
-  if (quo_name(fill_var) != "NULL") {
+  if (quo_name(fill_var) != "Ninguna") {
     color <- as.formula(paste0("~", quo_name(fill_var)))
     nfill <-
       .data %>%
       select(!!fill_var) %>%
-      unique %>%
+      distinct %>%
       nrow
   } else {
     color <- "#F8766D"
@@ -296,14 +302,14 @@ singleStackedHist <- function(.data,
 }
 
 
-trae_etiqueta <- function(x) {
-  # Devuelve nombre completo del parámetro x usando la tabla_sustitucion como referencia.
+trae_etiqueta <- function(x, ts) {
+  # Devuelve nombre completo del parametro x usando la tabla_sustitucion como referencia.
   
-  # x : nombre de un parámetro presente en la tabla_sustitucion.
+  # x : nombre de un parametro presente en la tabla_sustitucion.
   x <- enquo(x)
   require(magrittr)
-  if (!exists("tabla_sustitucion")) load("tabla_sustitucion.RData")
-  ts <- tabla_sustitucion
+  # if (!exists("tabla_sustitucion")) load("tabla_sustitucion.RData")
+  # ts <- tabla_sustitucion
   out <- quo_name(x)
   if (out %in% ts$Sustituto) {
     out <- with(ts, Original[out == Sustituto])
@@ -313,10 +319,11 @@ trae_etiqueta <- function(x) {
 
 tsummary <- function(x, param) {
   # Summary pero con salida tipo tibble.
-  
   # x : tabla
-  # param : nombre de un parámetro (columna) de x. Sin comillas
-  
+  # param : nombre de un parametro (columna) de x. Sin comillas
+  require(rlang)
+  require(dplyr)
+  require(magrittr)
   # grupo <- quos(...)
   param <- enquo(param)
   x %>%
