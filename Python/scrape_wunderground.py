@@ -10,6 +10,11 @@ import requests, sys, re, os
 if not os.path.isfile("geckodriver.exe"):
     sys.exit("geckodriver.exe needs to be on the working directory or PATH")
 
+# Alternative code (using Chrome and read_html from pandas, but just printing
+# in stdout) in SO question:
+# https://stackoverflow.com/a/55307310/1030523
+
+
 # Sample list of dates:
 fechas = ['2019-02-19', '2019-02-20', '2019-02-21', '2019-02-22', '2019-02-23']
 
