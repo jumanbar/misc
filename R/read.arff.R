@@ -41,7 +41,7 @@ read.arff <- function (file, nrows = -1, skip = 0) {
     col_dfmts <- character() ## Data formats
     line <- readLines(file, n = 1L)
     nom_levels <- NULL  ## List with al the labels, used to edit factor levels later on
-    a <- 0L             ## Iterator to keep account of attribute numbers
+    a <- 0L             ## Iterator to keep count of attribute numbers
     nom_attribs <- NULL ## Vector to store nominal attribute indexes
     while (length(line) && regexpr("^[[:space:]]*@(?i)data", 
         line, perl = TRUE) == -1L) {
