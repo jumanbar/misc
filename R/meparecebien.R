@@ -9,8 +9,8 @@
 #' @export
 #'
 #' @examples
-#' mepa(1)
-#' mepa(2)
+#' mepa(1) # "me parece bien que te parezca bien"
+#' mepa(2) # "me parece bien que te parezca bien que me parezca bien"
 #' mepa(4)
 #' # Escrbir en un archivito de texto:
 #' for(i in 1:6) cat(mepa(i), append=TRUE, file='mepa.txt', sep='\n')
